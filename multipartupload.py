@@ -51,7 +51,7 @@ def main():
     ap.add_argument('-f', '--file', required = True, help = "File to be chunked and uploaded")
     ap.add_argument('-k', '--key', help = "Key for destination object")
     ap.add_argument('-b', '--bucket', required = True, help = "Destination bucket")
-    ap.add_argument('-cs', '--chunk_size', required = True, type = int, choices = range(5,101), metavar = '[5-100]', help = "Chunk size in MB, must be > 5MiB")
+    ap.add_argument('-cs', '--chunk_size', type = int, choices = range(5,101), metavar = '[5-100]', default=50, help = "Chunk size in MB, must be > 5MiB")
     ap.add_argument('-p', '--processes', type = int, choices = range(1,256), metavar = '[1-256]', default = 10, help = "Number of upload processes to run simultaneously")
     args = vars(ap.parse_args())
     
