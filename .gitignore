@@ -212,3 +212,4 @@ terraform.rc
 *.parquet
 *.json
 *.pdf
+.DS_Store
