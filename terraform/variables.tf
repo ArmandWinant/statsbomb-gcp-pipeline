@@ -1,22 +1,29 @@
-variable "aws_profile" {
-  description = "AWS profile to manage resources"
-  default     = "default"
+variable "project_id" {
+  default = "utd19-455521"
+  description = "Project ID"
 }
 
 variable "credentials" {
-  description = "Credentials"
-  default     = "~/.aws/credentials"
+  default = "./.keys/service-account-creds.json"
+  description = "Service account credential file location"
+}
+
+variable "location" {
+  default = "EU"
+  description = "Project location"
 }
 
 variable "region" {
+  default = "europe-west3"
   description = "Project region"
-  default     = "eu-central-1"
 }
 
-resource "aws_s3_bucket" "utd19_bucket" {
-  bucket = "utd19"
+variable "gcs_code_bucket" {
+  default = "utd19-455521-code"
+  description = "Bucket for code files "
+}
 
-  tags = {
-    Name = "UTD19 data"
-  }
+variable "gcs_data_bucket" {
+  default = "utd19-455521-data"
+  description = "Bucket for raw and processed data"
 }

@@ -1,15 +1,13 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+    google = {
+      source = "hashicorp/google"
+      version = "6.27.0"
     }
   }
 }
 
-# Configure the AWS Provider
-provider "aws" {
-  region                   = var.region
-  shared_credentials_files = [var.credentials]
-  profile                  = var.aws_profile
+provider "google" {
+  project = var.location
+  region = var.region
 }
