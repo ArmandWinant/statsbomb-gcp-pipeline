@@ -1,5 +1,6 @@
 import argparse
 from google.cloud.storage import Client, transfer_manager
+import os
 
 def upload_chunks_concurrently(
     bucket_name,
@@ -28,6 +29,11 @@ def upload_chunks_concurrently(
 	# occupies some CPU and memory resources until finished. Threads can be used
 	# instead of processes by passing `worker_type=transfer_manager.THREAD`.
 	# workers=8
+
+	if not os.path.exists(source_filename):
+		print(f"File '{source_filename}' does not exist.")
+		return
+
 	storage_client = Client()
 	bucket = storage_client.bucket(bucket_name)
 	blob = bucket.blob(destination_blob_name)
@@ -45,7 +51,7 @@ if __name__=="__main__":
 	parser.add_argument('--bucket_name', required=True, help="ID of your GCS bucket")
 	parser.add_argument('--file_name', required=True, help="path to your file to upload")
 	parser.add_argument('--object_name', required=False, help="ID of your GCS object")
-	parser.add_argument('--chunk_size', required=False, default=32 * 1024 * 1024, help="size of each chunk")
+	parser.add_argument('--chunk_size', required=False, default=32 * 1024 * 1024, help="size of each chunk (max: 5, min: 100)")
 	parser.add_argument('--workers', required=False, default=8, help="maximum number of processes to use for the operation")
 
 	args = parser.parse_args()
