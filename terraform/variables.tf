@@ -1,5 +1,5 @@
 variable "project_id" {
-  default     = "utd19-455521"
+  default     = "utd19-traffic-dashboard"
   description = "Project ID"
 }
 
@@ -19,11 +19,11 @@ variable "region" {
 }
 
 variable "gcs_code_bucket" {
-  default     = "utd19-455521-code"
+  default     = "utd19-traffic-dashboard-code"
   description = "Bucket for code files "
 }
 
 variable "gcs_data_bucket" {
-  default     = "utd19-455521-data"
+  default     = "utd19-traffic-dashboard-data"
   description = "Bucket for raw and processed data"
 }
