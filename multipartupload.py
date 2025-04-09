@@ -6,7 +6,7 @@ def upload_chunks_concurrently(
     bucket_name,
     source_filename,
     destination_blob_name,
-    chunk_size=32 * 1024 * 1024,
+    chunk_size=32,
     workers=8,
 ):
 	"""Upload a single file, in chunks, concurrently in a process pool."""
@@ -59,7 +59,7 @@ if __name__=="__main__":
 	bucket_name = args.bucket_name
 	file_name = args.file_name
 	object_name = args.object_name
-	chunk_size = args.chunk_size
+	chunk_size = (int(args.chunk_size) * 1024) * 1024
 	workers = args.workers
 
 	upload_chunks_concurrently(
