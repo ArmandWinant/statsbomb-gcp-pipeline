@@ -8,7 +8,7 @@ GITHUB_REPO = "statsbomb/open-data"
 BRANCH = "master"
 GITHUB_DIR = "data"
 GCS_BUCKET_NAME = "statsbomb-gcp-pipeline_data"
-GCS_TARGET_PREFIX = "raw/statsbomb/"
+GCS_TARGET_PREFIX = "raw/"
 MAX_WORKERS = 10  # Adjust based on your network/GCS limits
 
 GITHUB_API_BASE = "https://api.github.com/repos"
@@ -44,7 +44,7 @@ def upload_to_gcs(repo_path, content):
     blob_path = os.path.join(GCS_TARGET_PREFIX, relative_path)
     blob = bucket.blob(blob_path)
     blob.upload_from_string(content, content_type="application/json")
-    print(f"✅ Uploaded: {relative_path}")
+    print(f"Uploaded: {relative_path}")
     return blob_path
 
 # 4. Combined worker function
@@ -53,14 +53,13 @@ def download_and_upload(repo_path):
         content = download_file(repo_path)
         return upload_to_gcs(repo_path, content)
     except Exception as e:
-        print(f"❌ Failed for {repo_path}: {e}")
+        print(f"Failed for {repo_path}: {e}")
         return None
 
 # 5. Main function
 def main():
-    print("🔍 Crawling GitHub for JSON files...")
     json_files = list_github_files_recursively()
-    print(f"📄 Found {len(json_files)} JSON files. Uploading in parallel...")
+    print(f"Found {len(json_files)} JSON files")
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [executor.submit(download_and_upload, path) for path in json_files]
