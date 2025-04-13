@@ -2,7 +2,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "6.27.0"
+      version = "6.29.0"
     }
   }
 }
@@ -14,9 +14,10 @@ provider "google" {
 }
 
 resource "google_storage_bucket" "data-bucket" {
-  name          = var.gcs_data_bucket
+  name          = var.data_bucket
   location      = var.location
   force_destroy = true
+  storage_class = var.gcs_storage_class
 
   lifecycle_rule {
     condition {
@@ -29,7 +30,17 @@ resource "google_storage_bucket" "data-bucket" {
 }
 
 resource "google_storage_bucket" "code-bucket" {
-  name          = var.gcs_code_bucket
+  name          = var.code_bucket
   location      = var.location
   force_destroy = true
+  storage_class = var.gcs_storage_class
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
 }
