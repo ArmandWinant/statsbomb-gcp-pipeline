@@ -208,8 +208,11 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+*.parquet
+*.crc
 *.csv
 *.parquet
 *.json
 *.pdf
 .DS_Store
+_SUCCESS
