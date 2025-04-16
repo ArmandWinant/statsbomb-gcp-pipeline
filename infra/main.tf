@@ -44,3 +44,9 @@ resource "google_storage_bucket" "code-bucket" {
     }
   }
 }
+
+resource "google_storage_bucket_object" "data-download-script" {
+  name   = "download_data.py"
+  bucket = google_storage_bucket.code-bucket.name
+  source = "../data_ingestion/download_data.py"
+}
