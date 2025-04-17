@@ -91,7 +91,6 @@ metadata = {
     sudo mkdir -p /home/${var.user}/.google/credentials
     chmod -R 755 /home/${var.user}/.google
 
-
     cd /home/${var.user} 
     git clone https://github.com/BastienWinant/airflow-docker-compose2025.git
 
