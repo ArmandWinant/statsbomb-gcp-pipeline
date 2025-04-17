@@ -54,8 +54,8 @@ resource "google_storage_bucket_object" "data-download-script" {
 # Read in script file
 locals {
   script_content = file("./Install_docker.sh")
-  gsc_service_acct = file("./keys/google-credentials.json")
-  gsc_service_acct_base64 = base64encode(file("./keys/google-credentials.json"))
+  gsc_service_acct = file("../.google/credentials/google-credentials.json")
+  gsc_service_acct_base64 = base64encode(file("../.google/credentials/google-credentials.json"))
 }
 
 resource "google_compute_instance" "vm_instance" {
