@@ -1,10 +1,10 @@
 variable "project_id" {
-  default     = "statsbomb-gcp-pipeline"
+  default     = "statsbomb-gcp-pipeline-457108"
   description = "Project ID"
 }
 
 variable "credentials" {
-  default     = "./keys/creds.json"
+  default     = "./keys/terra-airflow.json"
   description = "Service account credentials file"
 }
 
@@ -15,6 +15,11 @@ variable "location" {
 
 variable "region" {
   default     = "europe-west3"
+  description = "Project region"
+}
+
+variable "zone" {
+  default     = "europe-west3-c"
   description = "Project region"
 }
 
@@ -36,4 +41,20 @@ variable "code_bucket" {
 variable "bq_dataset" {
   default     = "statsbomb-warehouse"
   description = "Data warehouse"
+}
+
+variable "image" {
+    description = "Machine Image"
+    default = "ubuntu-2004-focal-v20250111"
+}
+
+variable "user"{
+    description = "User for maching"
+    default = "bastienwinant"
+}
+
+variable "ssh_key_file" {
+  description = "Path to the SSH public key file"
+  default     = "~/.ssh/gcp.pub" 
+
 }
