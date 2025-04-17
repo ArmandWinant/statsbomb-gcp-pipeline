@@ -45,7 +45,10 @@ def save_synced_shas(bucket, shas):
   blob.upload_from_string(json.dumps(shas), content_type="application/json")
 
 # Recursive listing of modified JSON files
-def get_changed_json_files(bucket, repo, branch="main", base_path=""):
+def get_changed_json_files(repo, branch="main", base_path=""):
+  client = storage.Client(project=os.getenv('PROJECT_ID'))
+  bucket = client.bucket(GCS_BUCKET_NAME)
+
   synced_shas = load_synced_shas(bucket)
   new_synced_shas = {}
   
@@ -92,23 +95,25 @@ def download_and_upload(bucket, repo_path):
     print(f"Failed for {repo_path}: {e}")
     return None
 
-# === RUN THE PIPELINE ===
-def main():
+def sync_statsbomb_jsons(json_files):
   client = storage.Client(project=os.getenv('PROJECT_ID'))
   bucket = client.bucket(GCS_BUCKET_NAME)
-  
+
+  with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+    futures = [executor.submit(download_and_upload, bucket, path) for path in json_files]
+    for future in as_completed(futures):
+      future.result()  # Triggers print inside upload_to_gcs or error
+
+# === RUN THE PIPELINE ===
+def main():
   json_files = get_changed_json_files(
-    bucket=bucket,
     repo=GITHUB_REPO,
     branch=BRANCH,
     base_path=GITHUB_DIR
   )
   print(f"Found {len(json_files)} new/updated JSON files")
   
-  with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-    futures = [executor.submit(download_and_upload, bucket, path) for path in json_files]
-    for future in as_completed(futures):
-      future.result()  # Triggers print inside upload_to_gcs or error
+  sync_statsbomb_jsons(json_files=json_files)
 
 if __name__ == "__main__":
   main()
