@@ -29,12 +29,12 @@ variable "gcs_storage_class" {
 }
 
 variable "data_bucket" {
-  default     = "statsbomb-gcp-pipeline_data"
+  default     = "statsbomb-gcp-pipeline-457108_data"
   description = "Data bucket"
 }
 
 variable "code_bucket" {
-  default     = "statsbomb-gcp-pipeline_code"
+  default     = "statsbomb-gcp-pipeline-457108_code"
   description = "Code bucket"
 }
 
