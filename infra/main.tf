@@ -93,7 +93,7 @@ metadata = {
 
 
     cd /home/${var.user} 
-    git clone https://github.com/MichaelShoemaker/airflow-docker-compose2025.git
+    git clone https://github.com/BastienWinant/airflow-docker-compose2025.git
 
     sudo mkdir -p /home/${var.user}/airflow-docker-compose2025/.google/credentials
     chmod -R 755 /home/${var.user}/airflow-docker-compose2025/.google
