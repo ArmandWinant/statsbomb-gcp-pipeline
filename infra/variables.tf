@@ -1,11 +1,11 @@
 variable "project_id" {
-  default     = "statsbomb-gcp-pipeline-457108"
+  default     = "statsbomb-data-pipeline"
   description = "Project ID"
 }
 
 variable "credentials" {
-  default     = "../.google/terra-airflow.json"
-  description = "Service account credentials file"
+  default = "../.google/terra-airflow.json"
+  description = "Service account creds file path"
 }
 
 variable "location" {
@@ -20,41 +20,21 @@ variable "region" {
 
 variable "zone" {
   default     = "europe-west3-c"
-  description = "Project region"
+  description = "Project zone"
 }
 
-variable "gcs_storage_class" {
-  default     = "STANDARD"
-  description = "Bucket storage class"
+variable "vpc_name" {
+  default = "terraform-network"
 }
 
-variable "data_bucket" {
-  default     = "statsbomb-gcp-pipeline-457108_data"
-  description = "Data bucket"
+variable "vm_name" {
+  default = "terraform-instance"
 }
 
-variable "code_bucket" {
-  default     = "statsbomb-gcp-pipeline-457108_code"
-  description = "Code bucket"
+variable "vm_type" {
+  default = "e2-micro"
 }
 
-variable "bq_dataset" {
-  default     = "statsbomb-warehouse"
-  description = "Data warehouse"
-}
-
-variable "image" {
-    description = "Machine Image"
-    default = "ubuntu-2004-focal-v20250111"
-}
-
-variable "user"{
-    description = "User for maching"
-    default = "bastienwinant"
-}
-
-variable "ssh_key_file" {
-  description = "Path to the SSH public key file"
-  default     = "~/.ssh/gcp.pub" 
-
+variable "vm_image" {
+  default = "debian-cloud/debian-11"
 }
