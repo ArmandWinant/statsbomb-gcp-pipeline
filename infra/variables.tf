@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "credentials" {
-  default = "../.google/terra-airflow.json"
+  default     = "../.google/terra-airflow.json"
   description = "Service account creds file path"
 }
 
