@@ -21,6 +21,11 @@ resource "google_compute_network" "vpc_network" {
 resource "google_compute_instance" "vm_instance" {
   name         = var.vm_name
   machine_type = var.vm_type
+  zone = var.zone
+  metadata = {
+    enable-oslogin : "TRUE"
+  }
+
   tags         = ["web", "dev"]
 
   boot_disk {
