@@ -23,32 +23,42 @@ variable "zone" {
   description = "Project zone"
 }
 
-variable "vm_name" {
+variable "data_bucket" {
+  default = "statsbomb-data-pipeline_data"
+  description = "GCS bucket for data files"
+}
+
+variable "code_bucket" {
+  default = "statsbomb-data-pipeline_code"
+  description = "GCS bucket for code files"
+}
+
+variable "airflow_vm" {
   default = "airflow-vm"
   description = "VM to run Airflow"
 }
 
-variable "vm_type" {
+variable "airflow_vm_type" {
   default = "e2-micro"
   description = "VM machine type"
 }
 
-variable "vm_image" {
+variable "airflow_vm_image" {
   default = "debian-cloud/debian-11"
   description = "VM image"
 }
 
-variable "vpc" {
+variable "vpc_network" {
   default = "my-custom-mode-network"
   description = "VPC network"
 }
 
-variable "subnet" {
+variable "vpc_subnet" {
   default = "my-custom-subnet"
   description = "VPC subnet"
 }
 
-variable "firewall" {
+variable "vpc_ssh_firewall" {
   default = "allow-ssh"
   description = "VPC firewall"
 }

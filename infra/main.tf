@@ -13,29 +13,59 @@ provider "google" {
   credentials = file(var.credentials)
 }
 
+resource "google_storage_bucket" "data_bucket" {
+  name          = var.data_bucket
+  location      = var.location
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+
+resource "google_storage_bucket" "code_bucket" {
+  name          = var.code_bucket
+  location      = var.location
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+
 resource "google_compute_network" "vpc_network" {
-  name                    = var.vpc
+  name                    = var.vpc_network
   auto_create_subnetworks = false
   mtu                     = 1460
 }
 
-resource "google_compute_subnetwork" "default" {
-  name          = var.subnet
+resource "google_compute_subnetwork" "vpc_subnet" {
+  name          = var.vpc_subnet
   ip_cidr_range = "10.0.1.0/24"
   region        = var.region
   network       = google_compute_network.vpc_network.id
 }
 
 # Create a single Compute Engine instance
-resource "google_compute_instance" "default" {
-  name         = var.vm_name
-  machine_type = var.vm_type
+resource "google_compute_instance" "airflow_vm" {
+  name         = var.airflow_vm
+  machine_type = var.airflow_vm_type
   zone         = var.zone
   tags         = ["ssh"]
 
   boot_disk {
     initialize_params {
-      image = var.vm_image
+      image = var.airflow_vm_image
     }
   }
 
@@ -43,7 +73,7 @@ resource "google_compute_instance" "default" {
   metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python3-pip rsync; pip install flask"
 
   network_interface {
-    subnetwork = google_compute_subnetwork.default.id
+    subnetwork = google_compute_subnetwork.vpc_subnet.id
 
     access_config {
       # Include this section to give the VM an external IP address
@@ -51,8 +81,8 @@ resource "google_compute_instance" "default" {
   }
 }
 
-resource "google_compute_firewall" "ssh" {
-  name = var.firewall
+resource "google_compute_firewall" "vpc_ssh_firewall" {
+  name = var.vpc_ssh_firewall
   allow {
     ports    = ["22"]
     protocol = "tcp"
