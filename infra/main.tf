@@ -8,34 +8,34 @@ terraform {
 }
 
 provider "google" {
-  project     = "statsbomb-data-pipeline"
-  region      = "europe-west3"
-  credentials = file("../.google/terra-airflow.json")
+  project     = var.project_id
+  region      = var.region
+  credentials = file(var.credentials)
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = "my-custom-mode-network"
+  name                    = var.vpc
   auto_create_subnetworks = false
   mtu                     = 1460
 }
 
 resource "google_compute_subnetwork" "default" {
-  name          = "my-custom-subnet"
+  name          = var.subnet
   ip_cidr_range = "10.0.1.0/24"
-  region        = "europe-west3"
+  region        = var.region
   network       = google_compute_network.vpc_network.id
 }
 
 # Create a single Compute Engine instance
 resource "google_compute_instance" "default" {
-  name         = "flask-vm"
-  machine_type = "e2-micro"
-  zone         = "europe-west3-a"
+  name         = var.vm_name
+  machine_type = var.vm_type
+  zone         = var.zone
   tags         = ["ssh"]
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = var.vm_image
     }
   }
 
@@ -52,7 +52,7 @@ resource "google_compute_instance" "default" {
 }
 
 resource "google_compute_firewall" "ssh" {
-  name = "allow-ssh"
+  name = var.firewall
   allow {
     ports    = ["22"]
     protocol = "tcp"
